@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Subscriber {
+  slug     String  @id
+  authUrl  String?
+  authType String?
+  apiKey   String  @default(uuid())
+
+  @@index([apiKey])
+  @@map("subscribers")
+}

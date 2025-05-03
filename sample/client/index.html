@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <title>Test Gateway SSE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col items-center p-6">
+    <h1 class="text-3xl font-bold mb-6 text-blue-600">Test de Gateway SSE</h1>
+
+    <div
+      id="messages"
+      class="w-full max-w-2xl space-y-4"></div>
+
+    <script>
+      const eventSource = new EventSource('http://localhost:7890/sse/events');
+
+      eventSource.onmessage = function (event) {
+        const messagesDiv = document.getElementById('messages');
+        const message = document.createElement('div');
+        message.className =
+          'p-4 bg-slate-200 rounded shadow border border-red-500';
+        message.textContent = `${event.data}`;
+        messagesDiv.appendChild(message);
+      };
+
+      eventSource.onerror = function (err) {
+        console.error('Erreur SSE :', err);
+        eventSource.close();
+      };
+    </script>
+  </body>
+</html>
